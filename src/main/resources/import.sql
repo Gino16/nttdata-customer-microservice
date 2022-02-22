@@ -1,0 +1,1 @@
+INSERT INTO customer_types(name) VALUES ('Personal'), ('Empresarial')
