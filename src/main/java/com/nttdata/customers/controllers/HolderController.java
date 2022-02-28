@@ -1,6 +1,8 @@
 package com.nttdata.customers.controllers;
 
+import com.nttdata.customers.entities.Customer;
 import com.nttdata.customers.entities.Holder;
+import com.nttdata.customers.services.CustomerService;
 import com.nttdata.customers.services.HolderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -8,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("/holders")
@@ -15,6 +18,9 @@ public class HolderController {
 
     @Autowired
     private HolderService holderService;
+
+    @Autowired
+    private CustomerService customerService;
 
     @GetMapping("/")
     public ResponseEntity<List<Holder>> findAll(){
@@ -32,13 +38,17 @@ public class HolderController {
     }
 
     @PostMapping("/")
-    public ResponseEntity<Holder> create(@RequestBody Holder Holder){
-        return new ResponseEntity<>(holderService.create(Holder), HttpStatus.CREATED);
+    public ResponseEntity<Holder> create(@RequestBody Holder holder){
+        Customer customer = customerService.findOneById(holder.getCustomer().getId());
+        if (Objects.equals(customer.getCustomerType().getName(), "Personal")){
+            return ResponseEntity.badRequest().build();
+        }
+        return new ResponseEntity<>(holderService.create(holder), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Holder> edit(@PathVariable Long id, @RequestBody Holder Holder){
-        return new ResponseEntity<>(holderService.edit(id, Holder), HttpStatus.CREATED);
+    public ResponseEntity<Holder> edit(@PathVariable Long id, @RequestBody Holder holder){
+        return new ResponseEntity<>(holderService.edit(id, holder), HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{id}")
