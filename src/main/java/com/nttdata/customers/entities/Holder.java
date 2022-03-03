@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "holders")
@@ -18,8 +19,13 @@ public class Holder {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank
     private String firstnames;
+
+    @NotBlank
     private String lastnames;
+
+    @NotBlank
     private String address;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -12,21 +12,21 @@ import java.util.List;
 public class SignatureServiceImpl implements SignatureService {
 
     @Autowired
-    private SignatureRepository SignatureRepository;
+    private SignatureRepository signatureRepository;
 
     @Override
     public List<Signature> findAll() {
-        return SignatureRepository.findAll();
+        return signatureRepository.findAll();
     }
 
     @Override
     public Signature findOneById(Long id) {
-        return SignatureRepository.findById(id).orElse(null);
+        return signatureRepository.findById(id).orElse(null);
     }
 
     @Override
     public Signature create(Signature Signature) {
-        return SignatureRepository.save(Signature);
+        return signatureRepository.save(Signature);
     }
 
     @Override
@@ -36,11 +36,11 @@ public class SignatureServiceImpl implements SignatureService {
         newSignature.setLastnames(Signature.getLastnames());
         newSignature.setAddress(Signature.getAddress());
 
-        return SignatureRepository.save(newSignature);
+        return signatureRepository.save(newSignature);
     }
 
     @Override
     public void deleteById(Long id) {
-        SignatureRepository.deleteById(id);
+        signatureRepository.deleteById(id);
     }
 }
