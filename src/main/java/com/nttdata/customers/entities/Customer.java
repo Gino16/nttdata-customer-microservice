@@ -23,7 +23,7 @@ public class Customer {
     private String name;
 
     @NotBlank
-    @Column(name = "ident_doc")
+    @Column(name = "ident_doc", unique = true)
     private String identDoc;
 
     @ManyToOne(fetch = FetchType.LAZY)

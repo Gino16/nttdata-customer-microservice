@@ -28,6 +28,10 @@ public class Holder {
     @NotBlank
     private String address;
 
+    @NotBlank
+    @Column(unique = true)
+    private String dni;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnoreProperties(value = {"applications", "hibernateLazyInitializer"})
     private Customer customer;
