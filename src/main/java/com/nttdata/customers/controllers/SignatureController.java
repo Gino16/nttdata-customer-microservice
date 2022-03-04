@@ -40,11 +40,15 @@ public class SignatureController {
     @PostMapping("/")
     public ResponseEntity<Signature> create(@RequestBody Signature signature){
 
-        Customer customer = customerService.findOneById(signature.getCustomer().getId());
-        if (Objects.equals(customer.getCustomerType().getName(), "Personal")){
+        try{
+            Customer customer = customerService.findOneById(signature.getCustomer().getId());
+            if (Objects.equals(customer.getCustomerType().getName(), "Personal")){
+                return ResponseEntity.badRequest().build();
+            }
+            return new ResponseEntity<>(signatureService.create(signature), HttpStatus.CREATED);
+        } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<>(signatureService.create(signature), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")

@@ -22,7 +22,12 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Customer findOneById(Long id) {
-        return customerRepository.findById(id).orElse(null);
+        Customer customer = customerRepository.findById(id).orElse(null);
+        if (customer != null){
+            customer.setHolders(customerRepository.findHoldersByCustomer(id));
+            customer.setSignatures(customerRepository.findSignaturesByCustomer(id));
+        }
+        return customer;
     }
 
     @Override
@@ -33,7 +38,7 @@ public class CustomerServiceImpl implements CustomerService {
     @Override
     public Customer edit(Long id, Customer customer) {
         Customer newCustomer = this.findOneById(id);
-        if(newCustomer ==  null){
+        if (newCustomer == null) {
             return null;
         }
         newCustomer.setName(customer.getName());
@@ -48,7 +53,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public List<CustomerType> findAllTypeCustomers(){
+    public List<CustomerType> findAllTypeCustomers() {
         return customerRepository.findAllCustomerTypes();
     }
 }

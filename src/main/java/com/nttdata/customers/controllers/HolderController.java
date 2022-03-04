@@ -39,11 +39,15 @@ public class HolderController {
 
     @PostMapping("/")
     public ResponseEntity<Holder> create(@RequestBody Holder holder){
-        Customer customer = customerService.findOneById(holder.getCustomer().getId());
-        if (Objects.equals(customer.getCustomerType().getName(), "Personal")){
+        try {
+            Customer customer = customerService.findOneById(holder.getCustomer().getId());
+            if (Objects.equals(customer.getCustomerType().getName(), "Personal")){
+                return ResponseEntity.badRequest().build();
+            }
+            return new ResponseEntity<>(holderService.create(holder), HttpStatus.CREATED);
+        } catch (Exception e){
             return ResponseEntity.badRequest().build();
         }
-        return new ResponseEntity<>(holderService.create(holder), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
